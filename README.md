@@ -501,14 +501,4 @@ flowchart TB
 
 ---
 
-## Usage
-
-**GitHub** — Push this `README.md` for native Mermaid rendering with capability colors.
-
-**Interactive** — Paste charts at [mermaid.live](https://mermaid.live)
-
-**Presentation** — Open `index.html` (or `ic_memo_workflow_presentation.html`) for the dark-mode scroll-animated version.
-
----
-
 *IC Production Blueprint v3.1 · Generalized · Process Controls · LLM Capability Map · Confidential*
