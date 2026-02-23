@@ -1,6 +1,6 @@
 # IC Memo Production Workflow — LLM Capability Map
 
-### Generalized Investment Committee Memo — Blueprint v3.0
+### Generalized Investment Committee Memo — Blueprint v2.0
 
 > **164 actionable steps** · **7 stages** · **5 validation gates** · **19 content sections**
 > Asset-class agnostic: venture, growth equity, PE, credit, real assets.
@@ -439,16 +439,6 @@ flowchart TB
 | 🔴 **LLM Cannot Do** | ~55 | Sign-offs, personnel assignments, deal terms, actuals reconciliation, confidentiality clearance, capital structure verification, IC decisions |
 | 🟡 **LLM Needs Human Assistance** | ~60 | Draft narratives from data, compute metrics from fed inputs, propose KPI definitions, format financials, build projections from assumptions |
 | 🟢 **LLM Can Do** | ~49 | Market research & TAM, comp analysis, scenario modeling, risk frameworks, revenue bridges, DCF/LBO, section compilation, exec summary, consistency checks |
-
----
-
-## Usage
-
-**GitHub** — Push this `README.md` for native Mermaid rendering with capability colors.
-
-**Interactive** — Paste charts at [mermaid.live](https://mermaid.live)
-
-**Presentation** — Open `index.html` (or `ic_memo_workflow_presentation.html`) for the dark-mode scroll-animated version.
 
 ---
 
