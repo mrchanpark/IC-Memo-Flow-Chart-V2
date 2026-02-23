@@ -1,19 +1,16 @@
 ---
-title: "IC Memo Production Workflow — LLM Capability Map"
+title: "IC Memo Production Workflow — Generalized LLM Capability Map v3.0"
 ---
 flowchart TB
 
 %% LEGEND: red = LLM Cannot Do | yel = LLM Needs Human | grn = LLM Can Do
 
-%% ═══════════════════════════════════════════
-%% PRE-PRODUCTION: TRANSACTION INTAKE
-%% ═══════════════════════════════════════════
 subgraph PRE["Pre-Production: Transaction Intake"]
   direction TB
-  P01(["CEO: Initiate memo production"]):::red --> P02["Define transaction type"]:::red
-  P02 --> P03["Set round size & range"]:::red
+  P01(["Deal Sponsor: Initiate memo production"]):::red --> P02["Define transaction type & asset class"]:::red
+  P02 --> P03["Set transaction size & structure"]:::red
   P03 --> P04["Establish valuation basis"]:::yel
-  P04 --> P05["Document decision required"]:::yel
+  P04 --> P05["Document IC decision required"]:::yel
   P05 --> P06["Set confidentiality tier"]:::red
   P06 --> P07["Lock data cutoff date"]:::red
   P07 --> P08["Set draft & final timeline"]:::yel
@@ -22,29 +19,26 @@ end
 subgraph RACI["Pre-Production: Ownership & Scoping"]
   direction TB
   P09["Assign Memo Owner"]:::red --> P10["Assign Financial Data Owner"]:::red
-  P10 --> P11["Assign Legal / Cap Table Owner"]:::red
-  P11 --> P12["Assign Product / GTM Owner"]:::red
-  P12 --> P13["Resolve scoping decisions with CEO"]:::red
-  P13 --> P14{"Secondary liquidity?"}:::redD
-  P14 -- Yes --> P15["Document sellers & amount"]:::red
-  P14 -- No --> P16{"Insider participation?"}:::redD
+  P10 --> P11["Assign Legal / Capital Structure Owner"]:::red
+  P11 --> P12["Assign Commercial / Operating Owner"]:::red
+  P12 --> P13["Resolve scoping with Deal Sponsor"]:::red
+  P13 --> P14{"Co-invest / secondary?"}:::redD
+  P14 -- Yes --> P15["Document co-investors & allocation"]:::red
+  P14 -- No --> P16{"Existing investor participation?"}:::redD
   P15 --> P16
-  P16 -- Yes --> P17["Document pro rata commitments"]:::red
-  P16 -- No --> P18["Confirm syndicate strategy"]:::red
+  P16 -- Yes --> P17["Document follow-on commitments"]:::red
+  P16 -- No --> P18["Confirm syndication strategy"]:::red
   P17 --> P18
   P18 --> P19["Finalize page budget"]:::yel
 end
 
 PRE --> RACI
 
-%% ═══════════════════════════════════════════
-%% GATE 1
-%% ═══════════════════════════════════════════
-subgraph G1["🚧 Gate 1: Metrics Definition Lock"]
+subgraph G1["🚧 Gate 1: KPI & Metrics Definition Lock"]
   direction TB
-  G1a["Define ARR methodology"]:::yel --> G1b["Define NRR calculation"]:::yel
-  G1b --> G1c["Define churn: logo vs. revenue"]:::yel
-  G1c --> G1d["Define CAC scope"]:::yel
+  G1a["Define revenue recognition methodology"]:::yel --> G1b["Define retention / renewal rate calc"]:::yel
+  G1b --> G1c["Define attrition: customer vs. revenue"]:::yel
+  G1c --> G1d["Define origination cost scope"]:::yel
   G1d --> G1e{"All definitions locked?"}:::redD
   G1e -- No --> G1a
   G1e -- Yes --> G1f["Finance Owner: SIGN-OFF ✓"]:::redM
@@ -52,93 +46,78 @@ end
 
 RACI --> G1
 
-%% ═══════════════════════════════════════════
-%% STAGE 1: THE HOOK
-%% ═══════════════════════════════════════════
-subgraph S1["Stage 1: The Hook — Company Overview"]
+subgraph S1["Stage 1: The Hook — Company / Asset Overview"]
   direction TB
-  S1a["Draft Company Overview: mission, founding, milestones"]:::yel --> S1b["Legal: Corporate structure & jurisdiction"]:::red
-  S1b --> S1c["Legal: Cap table summary"]:::red
-  S1c --> S1d["Finance: Headcount by function"]:::yel
-  S1d --> S1e["Finance: Prior funding summary"]:::yel
+  S1a["Draft overview: thesis, history, milestones"]:::yel --> S1b["Legal: Entity structure, jurisdiction"]:::red
+  S1b --> S1c["Legal: Capital structure & ownership"]:::red
+  S1c --> S1d["Finance: Headcount / operating footprint"]:::yel
+  S1d --> S1e["Finance: Prior capital raises"]:::yel
   S1e --> S1f["Compile Section 2"]:::grnC
 end
 
 G1 --> S1
 
-%% ═══════════════════════════════════════════
-%% STAGE 2: THE OPPORTUNITY
-%% ═══════════════════════════════════════════
 subgraph S2["Stage 2: The Opportunity"]
   direction TB
-  S2a["TAM: top-down"]:::grn --> S2b["TAM: bottom-up"]:::yel
+  S2a["TAM: top-down from industry data"]:::grn --> S2b["TAM: bottom-up from addressable accounts"]:::yel
   S2b --> S2c["Reconcile estimates"]:::grn
   S2c --> S2d["Define SAM & SOM"]:::grn
-  S2d --> S2e["Market tailwinds"]:::grn
-  S2e --> S2f["Regulatory landscape"]:::grn
+  S2d --> S2e["Sector tailwinds"]:::grn
+  S2e --> S2f["Regulatory & macro landscape"]:::grn
   S2f --> S2g["Compile Section 3"]:::grnC
-  S2g --> S2h["Quantify customer pain"]:::yel
+  S2g --> S2h["Quantify target pain / unmet need"]:::yel
   S2h --> S2i["Current alternatives"]:::grn
-  S2i --> S2j["Present solution"]:::yel
-  S2j --> S2k["Customer validation: NPS, quotes"]:::red
+  S2i --> S2j["Core value delivery mechanism"]:::yel
+  S2j --> S2k["Customer / counterparty validation"]:::red
   S2k --> S2l["Compile Section 4"]:::grnC
-  S2l --> S2m["Revenue model & pricing"]:::yel
-  S2m --> S2n["LTV, CAC, payback"]:::yel
-  S2n --> S2o["Gross margin profile"]:::yel
-  S2o --> S2p["Expansion mechanics"]:::yel
+  S2l --> S2m["Revenue model: streams, pricing"]:::yel
+  S2m --> S2n["Unit economics: margins, payback, ROI"]:::yel
+  S2n --> S2o["Gross / contribution margin"]:::yel
+  S2o --> S2p["Revenue growth levers"]:::yel
   S2p --> S2q["Compile Section 5"]:::grnC
 end
 
 S1 --> S2
 
-%% ═══════════════════════════════════════════
-%% STAGE 3: THE PROOF
-%% ═══════════════════════════════════════════
 subgraph S3["Stage 3: The Proof"]
   direction TB
-  S3a["ARR/MRR trajectory"]:::yel --> S3b["Growth rates: YoY & QoQ"]:::grn
-  S3b --> S3c["Customer count & churn"]:::yel
-  S3c --> S3d["NRR & gross retention"]:::yel
-  S3d --> S3e["Burn multiple, rev/employee"]:::grn
-  S3e --> S3f["Pipeline multiple"]:::yel
+  S3a["Revenue trajectory"]:::yel --> S3b["Growth rates: YoY, QoQ"]:::grn
+  S3b --> S3c["Customer / account attrition"]:::yel
+  S3c --> S3d["Retention & renewal rates"]:::yel
+  S3d --> S3e["Capital efficiency: burn, ROIC"]:::grn
+  S3e --> S3f["Pipeline / backlog coverage"]:::yel
   S3f --> S3g["Compile Section 6"]:::grnC
-  S3g --> S3h["2×2 competitive map"]:::grn
-  S3h --> S3i["Win/loss data"]:::red
-  S3i --> S3j["Document moats"]:::grn
+  S3g --> S3h["Competitive positioning map"]:::grn
+  S3h --> S3i["Win/loss or bid data"]:::red
+  S3i --> S3j["Moats & defensibility"]:::grn
   S3j --> S3k["Compile Section 7"]:::grnC
-  S3k --> S3l["Define sales motion"]:::yel
-  S3l --> S3m["Funnel conversion"]:::yel
-  S3m --> S3n["Quota, ramp, cycle"]:::yel
-  S3n --> S3o["Magic number & CAC"]:::yel
+  S3k --> S3l["Origination strategy"]:::yel
+  S3l --> S3m["Conversion rates by stage"]:::yel
+  S3m --> S3n["Productivity: cycle, ramp, capacity"]:::yel
+  S3n --> S3o["Origination efficiency by channel"]:::yel
   S3o --> S3p["Compile Section 8"]:::grnC
 end
 
 S2 --> S3
 
-%% ═══════════════════════════════════════════
-%% STAGE 4: THE TEAM
-%% ═══════════════════════════════════════════
 subgraph S4["Stage 4: The Team"]
   direction TB
-  S4a["Founder & C-suite profiles"]:::yel --> S4b["Org chart & headcount"]:::yel
-  S4b --> S4c["Key hires planned"]:::yel
-  S4c --> S4d["Retention metrics"]:::red
+  S4a["Management team profiles"]:::yel --> S4b["Org structure & footprint"]:::yel
+  S4b --> S4c["Key hires / investments planned"]:::yel
+  S4c --> S4d["Retention data"]:::red
   S4d --> S4e["Compile Section 9"]:::grnC
-  S4e --> S4f["Board members"]:::yel
-  S4f --> S4g["Advisors"]:::yel
-  S4g --> S4h["Investor follow-on"]:::red
+  S4e --> S4f["Board / governance composition"]:::yel
+  S4f --> S4g["Advisors & strategic relationships"]:::yel
+  S4g --> S4h["Investor follow-on intent"]:::red
   S4h --> S4i["Compile Section 10"]:::grnC
 end
 
 S3 --> S4
 
-%% ═══════════════════════════════════════════
-%% GATE 2
-%% ═══════════════════════════════════════════
 subgraph G2["🚧 Gate 2: Financial Reconciliation"]
   direction TB
-  G2a["Map figures to model cells"]:::yel --> G2b["Reconcile to GL: less than 1%"]:::red
-  G2b --> G2c["Verify consistency: S1=S6=S11"]:::yel
+  G2a["Map figures to model cells"]:::yel --> G2b["Reconcile to audited actuals"]:::red
+  G2b --> G2c["Verify consistency across sections"]:::yel
   G2c --> G2d{"All layers pass?"}:::redD
   G2d -- No --> G2a
   G2d -- Yes --> G2e["Joint sign-off ✓"]:::redM
@@ -146,38 +125,32 @@ end
 
 S4 --> G2
 
-%% ═══════════════════════════════════════════
-%% STAGE 5: THE NUMBERS
-%% ═══════════════════════════════════════════
 subgraph S5["Stage 5: The Numbers"]
   direction TB
-  S5a["P&L: 2–3 FY"]:::yel --> S5b["Balance sheet"]:::yel
+  S5a["P&L: 2–3 fiscal years"]:::yel --> S5b["Balance sheet & working capital"]:::yel
   S5b --> S5c["Cash flow & non-recurring"]:::yel
-  S5c --> S5d["Quarterly trends"]:::yel
+  S5c --> S5d["Quarterly / seasonal trends"]:::yel
   S5d --> S5e["Compile Section 11"]:::grnC
-  S5e --> S5f["3–5yr forecast"]:::yel
-  S5f --> S5g["Key assumptions"]:::yel
-  S5g --> S5h["Scenarios: base/bull/bear"]:::grn
-  S5h --> S5i["Revenue bridge"]:::grn
-  S5i --> S5j["Profitability path"]:::grn
+  S5e --> S5f["3–5 year forecast"]:::yel
+  S5f --> S5g["Key assumptions documented"]:::yel
+  S5g --> S5h["Scenarios: base / bull / bear"]:::grn
+  S5h --> S5i["Revenue bridge / growth decomposition"]:::grn
+  S5i --> S5j["Path to profitability / target returns"]:::grn
   S5j --> S5k["Compile Section 12"]:::grnC
-  S5k --> S5l["Cash position"]:::red
-  S5l --> S5m["Burn rate"]:::yel
-  S5m --> S5n["Runway"]:::grn
-  S5n --> S5o["Cash waterfall"]:::grn
-  S5o --> S5p["Milestone mapping"]:::yel
+  S5k --> S5l["Current cash / liquidity"]:::red
+  S5l --> S5m["Cash consumption or debt service"]:::yel
+  S5m --> S5n["Runway, covenant headroom, coverage"]:::grn
+  S5n --> S5o["Sources & uses waterfall"]:::grn
+  S5o --> S5p["Capital allocation plan"]:::yel
   S5p --> S5q["Compile Section 13"]:::grnC
 end
 
 G2 --> S5
 
-%% ═══════════════════════════════════════════
-%% GATE 3
-%% ═══════════════════════════════════════════
-subgraph G3["🚧 Gate 3: Cap Table & Legal"]
+subgraph G3["🚧 Gate 3: Capital Structure & Legal"]
   direction TB
-  G3a["Verify ownership %"]:::red --> G3b["Verify pool & convertibles"]:::red
-  G3b --> G3c["Pro forma post-raise"]:::yel
+  G3a["Verify ownership & capital structure"]:::red --> G3b["Verify instruments & obligations"]:::red
+  G3b --> G3c["Pro forma post-transaction"]:::yel
   G3c --> G3d["External counsel confirms"]:::red
   G3d --> G3e{"Fully reconciled?"}:::redD
   G3e -- No --> G3a
@@ -186,46 +159,40 @@ end
 
 S5 --> G3
 
-%% ═══════════════════════════════════════════
-%% STAGE 6: THE ASK
-%% ═══════════════════════════════════════════
 subgraph S6["Stage 6: The Ask"]
   direction TB
-  S6a["Round size & structure"]:::red --> S6b["Pre/post-money valuation"]:::red
-  S6b --> S6c["Use of proceeds"]:::yel
-  S6c --> S6d["Dilution table"]:::yel
+  S6a["Transaction size & structure"]:::red --> S6b["Valuation basis: EV, pre/post, asset"]:::red
+  S6b --> S6c["Use of proceeds / capital deployment"]:::yel
+  S6c --> S6d["Pro forma ownership / leverage"]:::yel
   S6d --> S6e["Timeline & commitments"]:::red
-  S6e --> S6f{"Transaction mechanics?"}:::redD
-  S6f -- Yes --> S6g["Secondary, insider, syndicate"]:::red
+  S6e --> S6f{"Complex mechanics?"}:::redD
+  S6f -- Yes --> S6g["Co-invest, secondary, syndication"]:::red
   S6f -- No --> S6h["Compile Section 14"]:::grnC
   S6g --> S6h
-  S6h --> S6i["5–8 comps with multiples"]:::grn
+  S6h --> S6i["5–8 comparable companies"]:::grn
   S6i --> S6j["Precedent transactions"]:::grn
-  S6j --> S6k["Growth-adjusted multiples"]:::grn
-  S6k --> S6l{"DCF applicable?"}:::yelD
-  S6l -- Yes --> S6m["Build DCF"]:::grn
+  S6j --> S6k["EV/Revenue, EV/EBITDA, P/E multiples"]:::grn
+  S6k --> S6l{"DCF / LBO applicable?"}:::yelD
+  S6l -- Yes --> S6m["Build DCF or LBO"]:::grn
   S6l -- No --> S6n["Triangulate range"]:::grn
   S6m --> S6n
-  S6n --> S6o["Internal: floor/target/ceiling"]:::red
-  S6o --> S6p["Market condition note"]:::grn
+  S6n --> S6o["Internal: floor / target / ceiling"]:::red
+  S6o --> S6p["Market conditions & refresh date"]:::grn
   S6p --> S6q["Compile Section 15"]:::grnC
 end
 
 G3 --> S6
 
-%% ═══════════════════════════════════════════
-%% STAGE 7: RISK & CLOSE
-%% ═══════════════════════════════════════════
 subgraph S7["Stage 7: Risk & Close"]
   direction TB
-  S7a["Market risks"]:::grn --> S7b["Execution risks"]:::grn
-  S7b --> S7c["Financial risks"]:::grn
-  S7c --> S7d["Regulatory risks"]:::grn
+  S7a["Market & macro risks"]:::grn --> S7b["Execution & operating risks"]:::grn
+  S7b --> S7c["Financial & structural risks"]:::grn
+  S7c --> S7d["Regulatory & legal risks"]:::grn
   S7d --> S7e["Pair each with mitigant"]:::grn
   S7e --> S7f["Compile Section 16"]:::grnC
-  S7f --> S7g["12–18mo milestone plan"]:::yel
-  S7g --> S7h["Next-round triggers"]:::yel
-  S7h --> S7i["Long-term vision & exits"]:::yel
+  S7f --> S7g["12–24 month milestone plan"]:::yel
+  S7g --> S7h["Key value inflection triggers"]:::yel
+  S7h --> S7i["Long-term thesis & exit paths"]:::yel
   S7i --> S7j["Compile Section 17"]:::grnC
   S7j --> S7k["Build appendix index"]:::grn
   S7k --> S7l["Confidentiality tiering"]:::yel
@@ -234,41 +201,32 @@ end
 
 S6 --> S7
 
-%% ═══════════════════════════════════════════
-%% EXECUTIVE SUMMARY
-%% ═══════════════════════════════════════════
 subgraph EXEC["Executive Summary — Written Last"]
   direction TB
-  E1["1-sentence company description"]:::grn --> E2["3–5 headline metrics"]:::grn
-  E2 --> E3["Round, valuation, UoP"]:::grn
-  E3 --> E4["Milestone statement"]:::grn
+  E1["1-sentence investment thesis"]:::grn --> E2["3–5 headline KPIs"]:::grn
+  E2 --> E3["Transaction, valuation, UoP"]:::grn
+  E3 --> E4["Value creation statement"]:::grn
   E4 --> E5["Compile Section 1 — max 1 page"]:::grnC
 end
 
 S7 --> EXEC
 
-%% ═══════════════════════════════════════════
-%% GATE 4
-%% ═══════════════════════════════════════════
 subgraph G4["🚧 Gate 4: Appendix Completeness"]
   direction TB
   G4a["Review claims"]:::grn --> G4b{"All supported?"}:::yelD
   G4b -- No --> G4c["Add evidence or remove"]:::yel
   G4c --> G4a
-  G4b -- Yes --> G4d["Refs cleared"]:::red
-  G4d --> G4e["Screenshots current"]:::red
+  G4b -- Yes --> G4d["References cleared"]:::red
+  G4d --> G4e["Exhibits current"]:::red
   G4e --> G4f["Sources cited"]:::grn
   G4f --> G4g["Sign-off ✓"]:::redM
 end
 
 EXEC --> G4
 
-%% ═══════════════════════════════════════════
-%% DECISION BLOCK
-%% ═══════════════════════════════════════════
 subgraph DEC["Section 19: Decision & Approval"]
   direction TB
-  D1["Decision requested"]:::red --> D2["Conditions & non-negotiables"]:::red
+  D1["IC decision requested"]:::red --> D2["Conditions & non-negotiables"]:::red
   D2 --> D3["Acceptable range"]:::red
   D3 --> D4["Fallback plan"]:::yel
   D4 --> D5["Escalation triggers"]:::yel
@@ -277,47 +235,36 @@ end
 
 G4 --> DEC
 
-%% ═══════════════════════════════════════════
-%% GATE 5
-%% ═══════════════════════════════════════════
 subgraph G5["🚧 Gate 5: Final Sign-Off & QC"]
   direction TB
-  Q1["Financials match model"]:::yel --> Q2["Revenue consistent"]:::grn
-  Q2 --> Q3["Burn = 3mo actuals"]:::yel
-  Q3 --> Q4["UoP ties to plan"]:::grn
+  Q1["Financials match model"]:::yel --> Q2["KPIs consistent"]:::grn
+  Q2 --> Q3["Cash matches actuals"]:::yel
+  Q3 --> Q4["Capital plan ties to ops"]:::grn
   Q4 --> Q5["Comps refreshed"]:::yel
-  Q5 --> Q6["NDA cleared"]:::red
-  Q6 --> Q7["Risk reviewed"]:::red
+  Q5 --> Q6["References cleared"]:::red
+  Q6 --> Q7["Risk reviewed by Legal"]:::red
   Q7 --> Q8["Page budget OK"]:::grn
   Q8 --> Q9["Index versioned"]:::grn
   Q9 --> QP{"All pass?"}:::redD
   QP -- No --> Q1
   QP -- Yes --> QS1["Finance Owner ✓"]:::redM
   QS1 --> QS2["Legal Owner ✓"]:::redM
-  QS2 --> QS3["CEO ✓"]:::redM
+  QS2 --> QS3["Deal Sponsor ✓"]:::redM
   QS3 --> QS4["Memo Owner ✓"]:::redM
-  QS4 --> DONE(["🚀 CLEARED FOR DISTRIBUTION"]):::redM
+  QS4 --> DONE(["🚀 CLEARED FOR IC DISTRIBUTION"]):::redM
 end
 
 DEC --> G5
 
-%% ═══════════════════════════════════════════
-%% STYLES — LLM CAPABILITY COLORS
-%% ═══════════════════════════════════════════
-%% 🔴 RED = LLM Cannot Do (Human Only)
+%% ═══ STYLES — LLM CAPABILITY COLORS ═══
 classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
 classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
 classDef redM fill:#dc2626,stroke:#b91c1c,color:#fff,font-weight:700
-
-%% 🟡 YELLOW = LLM Needs Human Assistance
 classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
 classDef yelD fill:#fbbf24,stroke:#d97706,color:#78350f,font-weight:700
-
-%% 🟢 GREEN = LLM Can Do Independently
 classDef grn fill:#dcfce7,stroke:#16a34a,color:#14532d
 classDef grnC fill:#16a34a,stroke:#15803d,color:#fff,font-weight:700
 
-%% Subgraph styling (neutral)
 style PRE fill:#1e1e2e,stroke:#475569,stroke-width:2px
 style RACI fill:#1e1e2e,stroke:#475569,stroke-width:2px
 style G1 fill:#1e1e2e,stroke:#d97706,stroke-width:2px,stroke-dasharray:6 3
