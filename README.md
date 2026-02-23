@@ -1,10 +1,11 @@
 # IC Memo Production Workflow — LLM Capability Map
 
-### Generalized Investment Committee Memo — Blueprint v2.0
+### Generalized Investment Committee Memo — Blueprint v3.1
 
-> **164 actionable steps** · **7 stages** · **5 validation gates** · **19 content sections**
+> **183 actionable steps** · **7 stages** · **5 validation gates** · **1 decision-rights freeze** · **19 content sections**
 > Asset-class agnostic: venture, growth equity, PE, credit, real assets.
 > Every step classified by what an LLM can and cannot do.
+> v3.1 adds: process controls, sign-off semantics, change control, assumption governance, valuation method applicability.
 
 ---
 
@@ -16,11 +17,20 @@
 | 🟡 | **LLM Needs Human Assistance** | LLM can draft/compute but needs human to supply data, validate, or approve output |
 | 🟢 | **LLM Can Do** | LLM can execute independently given prior context and data from earlier steps |
 
+## Sign-Off Types (New in v3.1)
+
+| Type | Meaning | Who |
+|---|---|---|
+| **ATTESTATION** | Domain data is accurate and reconciled | Finance, Legal, Commercial owners |
+| **CERTIFICATION** | Memo is production-ready, consistent, all gates passed | Memo Owner |
+| **APPROVAL** | Investment recommendation, terms, and strategy endorsed | Deal Sponsor |
+| **PREREQUISITE** | Governance/policy requirement fulfilled | Board Chair, External Counsel |
+
 ---
 
 ## Pre-Production: Transaction Intake
 
-> *Mostly 🔴 — these are deal sponsor decisions that set every downstream parameter.*
+> *Mostly 🔴 — these are Deal Sponsor decisions that set every downstream parameter.*
 
 ```mermaid
 flowchart LR
@@ -37,15 +47,15 @@ flowchart LR
 
 ## Pre-Production: Ownership & Scoping Decisions
 
-> *Mostly 🔴 — personnel assignments and deal structure decisions are human-only.*
+> *Mostly 🔴 — personnel assignments and deal structure decisions are human-only. v3.1: Memo Owner is the single accountable owner; version control established at scoping.*
 
 ```mermaid
 flowchart TB
-  P09["Assign Memo Owner"]:::red --> P10["Assign Financial Data Owner"]:::red
+  P09["Assign Memo Owner (single accountable)"]:::red --> P10["Assign Financial Data Owner"]:::red
   P10 --> P11["Assign Legal / Capital Structure Owner"]:::red
   P11 --> P12["Assign Commercial / Operating Owner"]:::red
-  P12 --> P13["Resolve scoping decisions with Deal Sponsor"]:::red
-  P13 --> P14{"Co-invest / secondary component?"}:::redD
+  P12 --> P13["Resolve scoping with Deal Sponsor"]:::red
+  P13 --> P14{"Co-invest / secondary?"}:::redD
   P14 -- Yes --> P15["Document co-investors & allocation"]:::red
   P14 -- No --> P16{"Existing investor participation?"}:::redD
   P15 --> P16
@@ -53,6 +63,7 @@ flowchart TB
   P16 -- No --> P18["Confirm syndication strategy"]:::red
   P17 --> P18
   P18 --> P19["Finalize page budget"]:::yel
+  P19 --> P20["Establish memo version control"]:::yel
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
@@ -60,18 +71,19 @@ flowchart TB
 
 ---
 
-## 🚧 Gate 1: KPI & Metrics Definition Lock
+## 🚧 Gate 1: Key Metric Definitions & Measurement Policy Lock
 
-> *🟡 LLM can propose standard definitions, but Finance must confirm methodology and sign off (🔴).*
+> *🟡 LLM can propose standard definitions, but Finance must confirm methodology. v3.1: Renamed for asset-class neutrality; includes metric framework selection by asset class.*
 
 ```mermaid
 flowchart LR
   A["Define revenue recognition methodology"]:::yel --> B["Define retention / renewal rate calc"]:::yel
   B --> C["Define attrition: customer vs. revenue"]:::yel
   C --> D["Define origination cost scope"]:::yel
-  D --> E{"All definitions locked?"}:::redD
+  D --> X["Select asset-class metric framework"]:::yel
+  X --> E{"All definitions locked?"}:::redD
   E -- No --> A
-  E -- Yes --> F["Financial Data Owner: SIGN-OFF ✓"]:::redM
+  E -- Yes --> F["Finance Owner: ATTESTATION ✓"]:::redM
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
   classDef redM fill:#dc2626,stroke:#b91c1c,color:#fff,font-weight:700
@@ -85,10 +97,10 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  A["Draft overview: thesis, history, milestones"]:::yel --> B["Legal: Entity structure, jurisdiction, subs"]:::red
-  B --> C["Legal: Capital structure & ownership summary"]:::red
+  A["Draft overview: thesis, history, milestones"]:::yel --> B["Legal: Entity structure, jurisdiction"]:::red
+  B --> C["Legal: Capital structure & ownership"]:::red
   C --> D["Finance: Headcount / operating footprint"]:::yel
-  D --> E["Finance: Prior capital raises or transactions"]:::yel
+  D --> E["Finance: Prior capital raises"]:::yel
   E --> F["Compile Section 2 — Overview"]:::grnC
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
@@ -193,17 +205,21 @@ flowchart TB
 
 ---
 
-## 🚧 Gate 2: Financial Reconciliation
+## 🚧 Gate 2: Financial Reconciliation & Controls
 
-> *Reconciliation to audited actuals is 🔴. Cross-checking consistency is 🟡. Sign-off always 🔴.*
+> *v3.1: Expanded with 4 mandatory finance controls — rounding policy, variance tolerance by line item, single source of truth, and non-GAAP reconciliation.*
 
 ```mermaid
 flowchart LR
-  A["Map memo figures to model cells"]:::yel --> B["Reconcile model to audited actuals"]:::red
-  B --> C["Verify internal consistency across sections"]:::yel
-  C --> D{"All reconciliation layers pass?"}:::redD
+  A["Map figures to model cells"]:::yel --> B["Reconcile to audited actuals"]:::red
+  B --> C["Verify consistency across sections"]:::yel
+  C --> R["Apply rounding policy"]:::yel
+  R --> V["Check variance tolerance by line item"]:::yel
+  V --> S["Confirm single source of truth model"]:::red
+  S --> N["Reconcile non-GAAP / adjusted metrics"]:::yel
+  N --> D{"All layers pass?"}:::redD
   D -- No --> A
-  D -- Yes --> E["Finance + Memo Owner: JOINT SIGN-OFF ✓"]:::redM
+  D -- Yes --> E["Finance + Memo Owner: JOINT ATTESTATION ✓"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -214,7 +230,7 @@ flowchart LR
 
 ## Stage 5: The Numbers
 
-> *🟡 for formatting historicals (needs data fed in). 🟢 for scenario modeling, bridges, and return analysis once assumptions are set.*
+> *🟡 for formatting historicals (needs data fed in). 🟢 for scenario modeling once assumptions are set. v3.1: Governed assumptions with owner + date + plan tie-out required.*
 
 ```mermaid
 flowchart TB
@@ -227,11 +243,12 @@ flowchart TB
   end
   subgraph PROJ["Section 12 · Projections"]
     direction TB
-    F1["3–5 year financial forecast"]:::yel --> F2["Key assumptions documented"]:::yel
-    F2 --> F3["Scenario analysis: base / bull / bear"]:::grn
+    F1["3–5 year financial forecast"]:::yel --> F2["Governed assumptions: owner + date + source"]:::yel
+    F2 --> F3["Scenarios: base / bull / bear (by drivers)"]:::grn
     F3 --> F4["Revenue bridge or growth decomposition"]:::grn
     F4 --> F5["Path to profitability / target returns"]:::grn
-    F5 --> F6["Compile Section 12"]:::grnC
+    F5 --> FT["Tie assumptions to operating / hiring / capex plan"]:::yel
+    FT --> F6["Compile Section 12"]:::grnC
   end
   subgraph CASH["Section 13 · Liquidity & Capital Needs"]
     direction TB
@@ -256,12 +273,12 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-  A["Verify ownership & capital structure"]:::red --> B["Verify dilutive instruments & debt obligations"]:::red
+  A["Verify ownership & capital structure"]:::red --> B["Verify instruments & obligations"]:::red
   B --> C["Pro forma post-transaction"]:::yel
-  C --> D["External counsel confirms all obligations"]:::red
+  C --> D["External counsel confirms"]:::red
   D --> E{"Fully reconciled?"}:::redD
   E -- No --> A
-  E -- Yes --> F["Legal + Counsel: SIGN-OFF ✓"]:::redM
+  E -- Yes --> F["Legal: ATTESTATION ✓"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -270,9 +287,29 @@ flowchart LR
 
 ---
 
+## ⚠ Decision-Rights Freeze — Required Before The Ask
+
+> *New in v3.1 — entirely 🔴. Before drafting Sections 14–15, the Deal Sponsor must lock five decision parameters. This prevents late-stage rewrites and internal inconsistency between the ask and the analysis.*
+
+```mermaid
+flowchart LR
+  DR1["Lock exact IC decision requested"]:::red --> DR2["Define negotiable vs non-negotiable terms"]:::red
+  DR2 --> DR3["Delegate negotiation authority & band"]:::red
+  DR3 --> DR4["Set return-to-IC triggers"]:::red
+  DR4 --> DR5["Lock target valuation range"]:::red
+  DR5 --> DR6{"All parameters locked?"}:::redD
+  DR6 -- No --> DR1
+  DR6 -- Yes --> DR7["Deal Sponsor: APPROVAL ✓"]:::redM
+  classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
+  classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
+  classDef redM fill:#dc2626,stroke:#b91c1c,color:#fff,font-weight:700
+```
+
+---
+
 ## Stage 6: The Ask
 
-> *Section 14 (deal terms) is mostly 🔴. Section 15 (valuation) is mostly 🟢 — comp analysis, DCF/LBO, and triangulation are LLM strengths. Internal pricing is 🔴.*
+> *Section 14 (deal terms) is mostly 🔴. Section 15 (valuation) is mostly 🟢. v3.1: Adds valuation method applicability check — not all methods apply to every deal.*
 
 ```mermaid
 flowchart TB
@@ -289,11 +326,12 @@ flowchart TB
   end
   subgraph VAL["Section 15 · Valuation Support"]
     direction TB
-    V1["Comparable companies: 5–8 comps"]:::grn --> V2["Precedent transactions"]:::grn
-    V2 --> V3["Multiple analysis: EV/Revenue, EV/EBITDA, P/E"]:::grn
-    V3 --> V4{"DCF / LBO applicable?"}:::yelD
-    V4 -- Yes --> V5["Build DCF or LBO model"]:::grn
-    V4 -- No --> V6["Triangulate valuation range"]:::grn
+    VX{"Select applicable valuation methods"}:::yelD --> V1["Comparable companies (if comps exist)"]:::grn
+    V1 --> V2["Precedent transactions (if recent)"]:::grn
+    V2 --> V3["Multiple analysis: EV/Rev, EV/EBITDA, P/E"]:::grn
+    V3 --> V4{"DCF / LBO / Cap Rate applicable?"}:::yelD
+    V4 -- Yes --> V5["Build applicable model"]:::grn
+    V4 -- No --> V6["Triangulate range from available methods"]:::grn
     V5 --> V6
     V6 --> V7["Internal: floor / target / ceiling"]:::red
     V7 --> V8["Market conditions & comp refresh date"]:::grn
@@ -312,7 +350,7 @@ flowchart TB
 
 ## Stage 7: Risk & Close
 
-> *Risk identification is fully 🟢. Value creation plan needs human input (🟡) because it reflects forward commitments. Appendix index is 🟢.*
+> *Risk identification is fully 🟢. Value creation plan needs human input (🟡). Appendix index is 🟢.*
 
 ```mermaid
 flowchart TB
@@ -361,7 +399,7 @@ flowchart LR
 
 ## 🚧 Gate 4: Appendix Completeness
 
-> *Claim review is 🟢. Reference and exhibit verification is 🔴 (requires live system access). Sign-off always 🔴.*
+> *Claim review is 🟢. Reference and exhibit verification is 🔴. v3.1: Memo Owner signs as CERTIFICATION (production readiness).*
 
 ```mermaid
 flowchart LR
@@ -371,7 +409,7 @@ flowchart LR
   B -- Yes --> D["Verify references cleared"]:::red
   D --> E["Verify exhibits current"]:::red
   E --> F["Verify data sources cited"]:::grn
-  F --> G["Memo Owner: SIGN-OFF ✓"]:::redM
+  F --> G["Memo Owner: CERTIFICATION ✓"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef yelD fill:#fbbf24,stroke:#d97706,color:#78350f,font-weight:700
@@ -383,7 +421,7 @@ flowchart LR
 
 ## ✅ Decision & Approval Block — Section 19
 
-> *Mostly 🔴 — IC-level decisions. LLM can draft fallback analysis (🟡) and compile (🟢).*
+> *Mostly 🔴 — IC-level decisions. v3.1: Adds internal-only content flagging step before compilation.*
 
 ```mermaid
 flowchart LR
@@ -391,7 +429,8 @@ flowchart LR
   B --> C["Acceptable negotiation range"]:::red
   C --> D["Fallback plan with impact analysis"]:::yel
   D --> E["Escalation triggers"]:::yel
-  E --> F["Compile Section 19"]:::grnC
+  E --> F["Internal-only content flagged"]:::yel
+  F --> G["Compile Section 19"]:::grnC
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef grnC fill:#16a34a,stroke:#15803d,color:#fff,font-weight:700
@@ -401,27 +440,30 @@ flowchart LR
 
 ## 🚧 Gate 5: Final Sign-Off & Pre-Submission QC
 
-> *QC checks are a mix: consistency checks 🟢, data freshness 🟡, legal clearance 🔴. All sign-offs are 🔴.*
+> *v3.1: Expanded with non-GAAP verification, internal-only redaction check, memo version metadata check. Sign-offs now carry explicit types.*
 
 ```mermaid
 flowchart TB
   subgraph QC["Pre-Submission Checklist"]
     direction TB
-    Q1["Financials match model"]:::yel --> Q2["KPIs consistent across sections"]:::grn
-    Q2 --> Q3["Cash figures match trailing actuals"]:::yel
+    Q1["Financials match single source model"]:::yel --> Q2["KPIs consistent across sections"]:::grn
+    Q2 --> Q3["Cash matches trailing actuals"]:::yel
     Q3 --> Q4["Capital plan ties to operating plan"]:::grn
-    Q4 --> Q5["Comps / market data refreshed"]:::yel
+    Q4 --> Q5["Comps refreshed & methods appropriate"]:::yel
     Q5 --> Q6["Confidential references cleared"]:::red
     Q6 --> Q7["Risk disclosures reviewed by Legal"]:::red
     Q7 --> Q8["Page budget enforced"]:::grn
     Q8 --> Q9["Appendix index versioned"]:::grn
+    Q9 --> Q10["Non-GAAP reconciliation verified"]:::yel
+    Q10 --> Q11["Internal-only content redacted from ext version"]:::red
+    Q11 --> Q12["Memo version metadata complete"]:::yel
   end
-  Q9 --> PASS{"All checks pass?"}:::redD
+  Q12 --> PASS{"All checks pass?"}:::redD
   PASS -- No --> Q1
-  PASS -- Yes --> S1x["Financial Data Owner ✓"]:::redM
-  S1x --> S2x["Legal / Capital Structure Owner ✓"]:::redM
-  S2x --> S3x["Deal Sponsor ✓"]:::redM
-  S3x --> S4x["Memo Owner ✓"]:::redM
+  PASS -- Yes --> S1x["Finance Owner: ATTESTATION ✓"]:::redM
+  S1x --> S2x["Legal Owner: ATTESTATION ✓"]:::redM
+  S2x --> S3x["Deal Sponsor: APPROVAL ✓"]:::redM
+  S3x --> S4x["Memo Owner: CERTIFICATION ✓"]:::redM
   S4x --> DONE(["🚀 MEMO CLEARED FOR IC DISTRIBUTION"]):::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -436,10 +478,36 @@ flowchart TB
 
 | Category | Approx. Steps | Examples |
 |---|:---:|---|
-| 🔴 **LLM Cannot Do** | ~55 | Sign-offs, personnel assignments, deal terms, actuals reconciliation, confidentiality clearance, capital structure verification, IC decisions |
-| 🟡 **LLM Needs Human Assistance** | ~60 | Draft narratives from data, compute metrics from fed inputs, propose KPI definitions, format financials, build projections from assumptions |
-| 🟢 **LLM Can Do** | ~49 | Market research & TAM, comp analysis, scenario modeling, risk frameworks, revenue bridges, DCF/LBO, section compilation, exec summary, consistency checks |
+| 🔴 **LLM Cannot Do** | ~61 | Sign-offs, personnel assignments, deal terms, actuals reconciliation, confidentiality clearance, capital structure verification, decision-rights freeze, IC decisions |
+| 🟡 **LLM Needs Human Assistance** | ~66 | Draft narratives from data, compute metrics from inputs, propose KPI definitions, format financials, governed assumptions, build projections, rounding/variance checks |
+| 🟢 **LLM Can Do** | ~56 | Market research & TAM, comp analysis, scenario modeling, risk frameworks, revenue bridges, DCF/LBO, section compilation, exec summary, consistency checks |
 
 ---
 
-*IC Production Blueprint v3.0 · Generalized · LLM Capability Map · Confidential*
+## v3.1 Process Controls Summary
+
+| Control | Description |
+|---|---|
+| **Ownership Hierarchy** | Memo Owner = single accountable; Deal Sponsor = final approver; functional owners = domain attestation |
+| **Sign-Off Semantics** | Four defined types: Attestation, Certification, Approval, Prerequisite |
+| **Version Control** | Memo-level: version number, date, owner, change summary, status |
+| **Change Control** | Gate re-open rules for 6 trigger events; material changes require new version + re-attestation |
+| **Decision-Rights Freeze** | 5 parameters locked before The Ask: decision, negotiables, authority, triggers, valuation range |
+| **Finance Controls** | Rounding policy, variance tolerance by line item, single source of truth, non-GAAP reconciliation |
+| **Assumption Governance** | Every projection assumption requires: owner, source, date, and plan tie-out |
+| **Valuation Applicability** | Method must be justified by asset class and data availability; inappropriate methods flagged |
+| **Distribution Controls** | Internal-only content redacted from external versions; -EXT suffix; Deal Sponsor approves external version |
+
+---
+
+## Usage
+
+**GitHub** — Push this `README.md` for native Mermaid rendering with capability colors.
+
+**Interactive** — Paste charts at [mermaid.live](https://mermaid.live)
+
+**Presentation** — Open `index.html` (or `ic_memo_workflow_presentation.html`) for the dark-mode scroll-animated version.
+
+---
+
+*IC Production Blueprint v3.1 · Generalized · Process Controls · LLM Capability Map · Confidential*
