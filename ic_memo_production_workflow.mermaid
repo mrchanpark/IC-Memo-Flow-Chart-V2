@@ -128,7 +128,7 @@ subgraph G2["🚧 Gate 2: Financial Reconciliation & Controls"]
   G2s --> G2n["Reconcile non-GAAP / adjusted metrics"]:::yel
   G2n --> G2d{"All layers pass?"}:::redD
   G2d -- No --> G2a
-  G2d -- Yes --> G2e["Finance + Memo Owner: JOINT ATTESTATION ✓"]:::redM
+  G2d -- Yes --> G2e["Finance Owner: ATTESTATION ✓ | Memo Owner: CERTIFICATION ✓"]:::redM
 end
 
 S4 --> G2
@@ -163,7 +163,8 @@ subgraph G3["🚧 Gate 3: Capital Structure & Legal"]
   G3c --> G3d["External counsel confirms"]:::red
   G3d --> G3e{"Fully reconciled?"}:::redD
   G3e -- No --> G3a
-  G3e -- Yes --> G3f["Legal: ATTESTATION ✓"]:::redM
+  G3e -- Yes --> G3f["Legal Owner: ATTESTATION ✓"]:::redM
+  G3f --> G3g["External Counsel: PREREQUISITE ✓ (if required)"]:::redM
 end
 
 S5 --> G3
@@ -276,8 +277,8 @@ subgraph G5["🚧 Gate 5: Final Sign-Off & QC"]
   QP -- No --> Q1
   QP -- Yes --> QS1["Finance Owner: ATTESTATION ✓"]:::redM
   QS1 --> QS2["Legal Owner: ATTESTATION ✓"]:::redM
-  QS2 --> QS3["Deal Sponsor: APPROVAL ✓"]:::redM
-  QS3 --> QS4["Memo Owner: CERTIFICATION ✓"]:::redM
+  QS2 --> QS3["Memo Owner: CERTIFICATION ✓"]:::redM
+  QS3 --> QS4["Deal Sponsor: APPROVAL ✓"]:::redM
   QS4 --> DONE(["🚀 CLEARED FOR IC DISTRIBUTION"]):::redM
 end
 

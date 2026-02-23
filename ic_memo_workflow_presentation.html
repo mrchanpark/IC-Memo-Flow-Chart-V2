@@ -89,7 +89,7 @@
   <h1>IC Memo<span>Production Workflow</span></h1>
   <p class="hero-sub">Asset-class agnostic IC memo production with full process controls: sign-off semantics, change control, assumption governance, and valuation method applicability. Venture, growth equity, PE, credit, and real assets.</p>
   <div class="hero-metrics">
-    <div class="hero-metric"><div class="val">183</div><div class="lbl">Steps</div></div>
+    <div class="hero-metric"><div class="val">184</div><div class="lbl">Steps</div></div>
     <div class="hero-metric"><div class="val">7</div><div class="lbl">Stages</div></div>
     <div class="hero-metric"><div class="val">5</div><div class="lbl">Gates</div></div>
     <div class="hero-metric"><div class="val">1</div><div class="lbl">Freeze</div></div>
@@ -290,7 +290,7 @@ flowchart LR
   S --> N["Reconcile non-GAAP / adjusted metrics"]:::yel
   N --> D{"All layers pass?"}:::redD
   D -- No --> A
-  D -- Yes --> E["Finance + Memo Owner: JOINT ATTESTATION ✓"]:::redM
+  D -- Yes --> E["Finance Owner: ATTESTATION ✓ | Memo Owner: CERTIFICATION ✓"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -348,7 +348,8 @@ flowchart LR
   C --> D["External counsel confirms"]:::red
   D --> E{"Fully reconciled?"}:::redD
   E -- No --> A
-  E -- Yes --> F["Legal: ATTESTATION ✓"]:::redM
+  E -- Yes --> F["Legal Owner: ATTESTATION ✓"]:::redM
+  F --> G["External Counsel: PREREQUISITE ✓ (if required)"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -519,8 +520,8 @@ flowchart TB
   PASS -- No --> Q1
   PASS -- Yes --> S1x["Finance Owner: ATTESTATION ✓"]:::redM
   S1x --> S2x["Legal Owner: ATTESTATION ✓"]:::redM
-  S2x --> S3x["Deal Sponsor: APPROVAL ✓"]:::redM
-  S3x --> S4x["Memo Owner: CERTIFICATION ✓"]:::redM
+  S2x --> S3x["Memo Owner: CERTIFICATION ✓"]:::redM
+  S3x --> S4x["Deal Sponsor: APPROVAL ✓"]:::redM
   S4x --> DONE(["🚀 MEMO CLEARED FOR IC DISTRIBUTION"]):::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700

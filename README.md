@@ -2,7 +2,7 @@
 
 ### Generalized Investment Committee Memo — Blueprint v3.1
 
-> **183 actionable steps** · **7 stages** · **5 validation gates** · **1 decision-rights freeze** · **19 content sections**
+> **184 actionable steps** · **7 stages** · **5 validation gates** · **1 decision-rights freeze** · **19 content sections**
 > Asset-class agnostic: venture, growth equity, PE, credit, real assets.
 > Every step classified by what an LLM can and cannot do.
 > v3.1 adds: process controls, sign-off semantics, change control, assumption governance, valuation method applicability.
@@ -219,7 +219,7 @@ flowchart LR
   S --> N["Reconcile non-GAAP / adjusted metrics"]:::yel
   N --> D{"All layers pass?"}:::redD
   D -- No --> A
-  D -- Yes --> E["Finance + Memo Owner: JOINT ATTESTATION ✓"]:::redM
+  D -- Yes --> E["Finance Owner: ATTESTATION ✓ | Memo Owner: CERTIFICATION ✓"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -278,7 +278,8 @@ flowchart LR
   C --> D["External counsel confirms"]:::red
   D --> E{"Fully reconciled?"}:::redD
   E -- No --> A
-  E -- Yes --> F["Legal: ATTESTATION ✓"]:::redM
+  E -- Yes --> F["Legal Owner: ATTESTATION ✓"]:::redM
+  F --> G["External Counsel: PREREQUISITE ✓ (if required)"]:::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef yel fill:#fef3c7,stroke:#d97706,color:#78350f
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -462,8 +463,8 @@ flowchart TB
   PASS -- No --> Q1
   PASS -- Yes --> S1x["Finance Owner: ATTESTATION ✓"]:::redM
   S1x --> S2x["Legal Owner: ATTESTATION ✓"]:::redM
-  S2x --> S3x["Deal Sponsor: APPROVAL ✓"]:::redM
-  S3x --> S4x["Memo Owner: CERTIFICATION ✓"]:::redM
+  S2x --> S3x["Memo Owner: CERTIFICATION ✓"]:::redM
+  S3x --> S4x["Deal Sponsor: APPROVAL ✓"]:::redM
   S4x --> DONE(["🚀 MEMO CLEARED FOR IC DISTRIBUTION"]):::redM
   classDef red fill:#fecaca,stroke:#dc2626,color:#7f1d1d
   classDef redD fill:#f87171,stroke:#dc2626,color:#7f1d1d,font-weight:700
@@ -478,7 +479,7 @@ flowchart TB
 
 | Category | Approx. Steps | Examples |
 |---|:---:|---|
-| 🔴 **LLM Cannot Do** | ~61 | Sign-offs, personnel assignments, deal terms, actuals reconciliation, confidentiality clearance, capital structure verification, decision-rights freeze, IC decisions |
+| 🔴 **LLM Cannot Do** | ~62 | Sign-offs, personnel assignments, deal terms, actuals reconciliation, confidentiality clearance, capital structure verification, decision-rights freeze, IC decisions |
 | 🟡 **LLM Needs Human Assistance** | ~66 | Draft narratives from data, compute metrics from inputs, propose KPI definitions, format financials, governed assumptions, build projections, rounding/variance checks |
 | 🟢 **LLM Can Do** | ~56 | Market research & TAM, comp analysis, scenario modeling, risk frameworks, revenue bridges, DCF/LBO, section compilation, exec summary, consistency checks |
 
